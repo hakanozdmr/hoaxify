@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueEmail {
 
-    String message() default "E-mail in use";
+    String message() default "{hoaxify.constraints.email.notunique}";
 
     Class<?>[] groups() default {};
 

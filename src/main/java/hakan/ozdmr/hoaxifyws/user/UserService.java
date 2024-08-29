@@ -1,7 +1,7 @@
 package hakan.ozdmr.hoaxifyws.user;
 
+import hakan.ozdmr.hoaxifyws.user.exception.NotUniqueEmailException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

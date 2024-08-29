@@ -1,0 +1,11 @@
+{
+  "translation": {
+    "signUp": "Kayıt ol",
+    "username": "Kullanıcı Adı",
+    "email": "E-posta",
+    "password": "Şifre",
+    "passwordRepeat": "Şifre Tekrarı",
+    "passwordMissmatch": "Şifreler eşleşmiyor",
+    "generalError": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin"
+  }
+}

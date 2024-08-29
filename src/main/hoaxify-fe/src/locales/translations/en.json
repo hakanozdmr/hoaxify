@@ -1,0 +1,11 @@
+{
+  "translation": {
+    "signUp": "Sign Up",
+    "username": "Username",
+    "email": "E-mail",
+    "password": "Password",
+    "passwordRepeat": "Password Repeat",
+    "passwordMissmatch": "Password missmatch",
+    "generalError": "Unexpected error occured. Please try again"
+  }
+}
