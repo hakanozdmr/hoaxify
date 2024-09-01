@@ -1,9 +1,12 @@
 package hakan.ozdmr.hoaxifyws.error;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ApiError {
 
     private int status;
@@ -14,7 +17,7 @@ public class ApiError {
 
     private final long timestamp = new Date().getTime();
 
-    private Map<String,String> validationErrors = new HashMap<>();
+    private Map<String,String> validationErrors = null;
 
     public int getStatus() {
         return status;

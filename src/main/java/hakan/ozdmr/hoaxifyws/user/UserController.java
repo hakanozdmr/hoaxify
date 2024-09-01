@@ -3,6 +3,9 @@ package hakan.ozdmr.hoaxifyws.user;
 import hakan.ozdmr.hoaxifyws.error.ApiError;
 import hakan.ozdmr.hoaxifyws.shared.GenericMessage;
 import hakan.ozdmr.hoaxifyws.shared.Messages;
+import hakan.ozdmr.hoaxifyws.user.dto.UserCreate;
+import hakan.ozdmr.hoaxifyws.user.exception.ActivationNotificationException;
+import hakan.ozdmr.hoaxifyws.user.exception.InvalidTokenException;
 import hakan.ozdmr.hoaxifyws.user.exception.NotUniqueEmailException;
 import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,10 +32,17 @@ public class UserController {
     }
 
     @PostMapping
-    GenericMessage createUser(@Valid @RequestBody User user){
-        userService.save(user);
+    GenericMessage createUser(@Valid @RequestBody UserCreate user){
+        userService.save(user.toUser());
         String message = Messages.getMessageForLocale("hoaxify.create.user.success.message",LocaleContextHolder.getLocale());
-        LOGGER.info(message+" " + user.getUsername());
+        LOGGER.info(message+" " + user.username());
+        return new GenericMessage(message);
+    }
+    @PatchMapping("/{token}/activate")
+    GenericMessage activateUser(@PathVariable String token){
+        userService.activateUser(token);
+        String message = Messages.getMessageForLocale("hoaxify.activate.user.success.message",LocaleContextHolder.getLocale());
+        LOGGER.info(message);
         return new GenericMessage(message);
     }
 
@@ -63,6 +73,26 @@ public class UserController {
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(400);
         apiError.setValidationErrors(exception.getValidationErrors());
+        return apiError;
+    }
+
+    @ExceptionHandler(ActivationNotificationException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    ApiError handleActivationNotificationEx(ActivationNotificationException exception){
+        ApiError apiError = new ApiError();
+        apiError.setPath("/api/v1/users");
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(502);
+        return apiError;
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ApiError handleInvalidTokenEx(InvalidTokenException exception){
+        ApiError apiError = new ApiError();
+        apiError.setPath("/api/v1/users");
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(400);
         return apiError;
     }
 }

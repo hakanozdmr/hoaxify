@@ -13,6 +13,7 @@ i18nInstance.init({
     en: en,
     tr: tr,
   },
+  lng: initialLanguage,
   fallbackLng: initialLanguage,
 
   interpolation: {

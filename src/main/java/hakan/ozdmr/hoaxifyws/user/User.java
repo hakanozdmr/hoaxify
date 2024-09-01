@@ -1,11 +1,6 @@
 package hakan.ozdmr.hoaxifyws.user;
 
-import hakan.ozdmr.hoaxifyws.user.validation.UniqueEmail;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users" , uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
@@ -15,19 +10,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{hoaxify.constraints.username.notblank}")
-    @Size(min = 4 , max= 255)
+
     private String username;
 
-    @NotBlank
-    @Email
-    @UniqueEmail
+
     private String email;
 
-    @NotBlank
-    @Size(min = 8 , max= 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$" , message = "{hoaxify.constraints.password.pattern}")
+
     private String password;
+
+    private boolean active = false;
+
+    private String activationToken;
 
 
     public String getUsername() {
@@ -60,5 +54,21 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean actice) {
+        this.active = actice;
+    }
+
+    public String getActivationToken() {
+        return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
     }
 }

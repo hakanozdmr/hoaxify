@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
 import { Input } from "./components/Input";
 import { useTranslation } from "react-i18next";
-import { LanguageSelector } from "../../shared/components/LanguageSelector";
+import { Alert } from "@/shared/components/Alert";
+import { Spinner } from "@/shared/components/Spinner";
 
 export function SignUp() {
   const [username, setUsername] = useState();
@@ -57,10 +58,14 @@ export function SignUp() {
       setSuccesMessage(response.data.message);
     } catch (axiosError) {
       if (
-        axiosError.response?.data &&
-        axiosError.response.data.status === 400
+        axiosError.response?.data
       ) {
-        setErrors(axiosError.response.data.validationErrors);
+        if(axiosError.response.data.status === 400){
+          setErrors(axiosError.response.data.validationErrors);
+        }else{
+          setGeneralError(t(axios.response.data.message));
+        }
+
       } else {
         setGeneralError(t('generalError'));
       }
@@ -114,10 +119,10 @@ export function SignUp() {
             />
           </div>
           {successMessage && (
-            <div className="alert alert-success m-3">{successMessage}</div>
+             <Alert>{successMessage}</Alert>
           )}
           {generalError && (
-            <div className="alert alert-danger m-3 mt-0">{generalError}</div>
+             <Alert styleType='danger'>{generalError}</Alert>
           )}
           <div className="text-center mb-3">
             <button
@@ -125,16 +130,13 @@ export function SignUp() {
               disabled={!password || password !== passwordRepeat || apiProgress}
             >
               {apiProgress && (
-                <span
-                  className="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
+                <Spinner size='sm'/>
               )}
               {t('signUp')}
             </button>
           </div>
         </form>
-        <LanguageSelector></LanguageSelector>
+        
       </div>
     </div>
   );
